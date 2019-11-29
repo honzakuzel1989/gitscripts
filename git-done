@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# cilova branch, do ktere se merguje, typicky master
+DST_BRANCH="master"
+if [ ! -z "$1" ]; then
+    DST_BRANCH="$1"
+fi
+
+# zjisteni nazvu aktualni branche - typicky taskXXXX, bugXXXX, ...
+cb=`git rev-parse --abbrev-ref HEAD`
+# co do cilove branche && merge branche s ukolem && smazani branche
+git checkout $DST_BRANCH && git merge --no-ff $cb && git branch -d $cb
