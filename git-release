@@ -1,12 +1,16 @@
 #!/bin/bash
+# git release <branch>
 
-# cilova branch, ktera se releasuje, typicky release
-DST_BRANCH="release"
+# destination branch as parameter - depends on merge strategy, typically release
+DST_BRANCH=""
 if [ ! -z "$1" ]; then
     DST_BRANCH="$1"
+else
+	echo "Usage: git release <branch>"
+	exit 1
 fi
 
-# zjisteni nazvu aktualni branche - typicky master
+# get  current branch - typically master or develop
 cb=`git rev-parse --abbrev-ref HEAD`
-# co do cilove branche && ziskani zmen && merge puvodni branche && predani zmen && navrat do puvodni branche
-git push && git checkout $DST_BRANCH && git pull && git merge --ff $cb && git push && git co $cb
+# push current branch, pull destination branch, fast forward merge from current branch to destination branch, push and return
+git push && git checkout $DST_BRANCH && git pull && git merge --ff $cb && git push && git checkout $cb
